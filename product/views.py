@@ -5,16 +5,12 @@ from rest_framework.views import APIView
 from .serializers import ProductSerializer
 from django.http import Http404
 from rest_framework import status, viewsets
-from .inference_code import predict
+#from .inference_code import predict
+from .apps import ProductConfig 
 
 class ProductListAPI(viewsets.ModelViewSet): #목록 보여줌
     serializer_class  = ProductSerializer
     queryset = Product.objects.all()
-    
-    def url(self,name):
-        img_name=name.split('/')
-        
-        return img_name[-1]
     
     def get(self, request): #리스트 보여줌
         queryset = Product.objects.all()
@@ -26,14 +22,11 @@ class ProductListAPI(viewsets.ModelViewSet): #목록 보여줌
         serializer= ProductSerializer(
             data=requset.data)
         if serializer.is_valid():
-            img_name=url(serializer.data['image'])
-            predict_name=predict(img_name)
-            serializer.data['predict']=predict_name
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
     
-class ProductDetailAPI(APIView):
+class ProductPredictAPI(APIView):
     def get_object(self, pk):
         try:
             return Product.objects.get(pk=pk)
@@ -43,9 +36,17 @@ class ProductDetailAPI(APIView):
     def get(self, requset, pk, format=None):
         product=self.get_object(pk)
         serializer=ProductSerializer(product)
-        return Response(serializer.data)
+        img_name=serializer.data['image'].split('/')
+        
+        predictions=ProductConfig.model.predict(img_name[-1])
+        predictions.update(serializer.data)
 
+        return Response(predictions, status=status.HTTP_201_CREATED)
+    
     def delete(self,request,pk,format=None):
         product=self.get_object(pk)
         product.delete()
         return Response(status=statue.HTTP_204_NO_CONTENT)
+
+
+        
