@@ -37,8 +37,8 @@ class ProductPredictAPI(APIView):
         product=self.get_object(pk)
         serializer=ProductSerializer(product)
         img_name=serializer.data['image'].split('/')
-        
-        predictions=ProductConfig.model.predict(img_name[-1])
+        image_name=str(img_name[-1])
+        predictions=ProductConfig.model.predict(image_name)
         predictions.update(serializer.data)
 
         return Response(predictions, status=status.HTTP_201_CREATED)

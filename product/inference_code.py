@@ -36,7 +36,7 @@ from torchvision import models
 
 
 def img_load(path):
-    img = cv2.resize(path, (512, 512))
+    img = cv2.resize(path, (16, 16))
     return img
 
 
@@ -64,7 +64,10 @@ class Custom_dataset(Dataset):
                 img = img[:,::-1].copy()
         if self.mode=='test':
             pass
+#tv.transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
         img = Image.fromarray(img) # NumPy array to PIL image
+        img = img.convert("RGB")
+
         if self.transforms is not None:
             img = self.transforms(img)        
         label = self.labels[idx]
@@ -73,15 +76,17 @@ class Custom_dataset(Dataset):
 class Network(nn.Module):
     def __init__(self):
         super(Network, self).__init__()
-        self.model = models.densenet201(pretrained=False, num_classes=88)
+        self.model = models.resnet18(pretrained=False)
+        self.linear=nn.Linear(in_features=1000,out_features=88)
         
     def forward(self, x):
         x = self.model(x)
+        x = self.linear(x)
         return x
 
 
 class PredictModel():
-    def predict(file_name=None):
+    def predict(self,file_name=None):
         if file_name==None:
             return { "answer" : "error" }
         else:
@@ -91,8 +96,6 @@ class PredictModel():
             test_imgs = img_load(test_png)
 
             transforms_test = transforms.Compose([
-                transforms.RandomHorizontalFlip(p=0.5),
-                transforms.RandomVerticalFlip(p=0.5),
                 transforms.ToTensor(),
                 transforms.Normalize(
                     [0.485, 0.456, 0.406],
@@ -108,10 +111,10 @@ class PredictModel():
             label_unique = {key:value for key,value in zip(label_unique, range(len(label_unique)))}
 
             # Test
-            batch_size = 32
+            batch_size = 1
 
             test_dataset = Custom_dataset(np.array(test_imgs), np.array(["tmp"]*len(test_imgs)), mode='test',transforms=transforms_test)
-            test_loader = DataLoader(test_dataset, shuffle=False, batch_size=batch_size)
+            test_loader = DataLoader(test_dataset, shuffle=False, batch_size=1)
 
             device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
             model = Network().to(device)
@@ -123,12 +126,11 @@ class PredictModel():
             with torch.no_grad():
                 for batch in (test_loader):
                     x = torch.tensor(batch[0], dtype = torch.float32, device = device)
-                    with torch.cuda.amp.autocast():
-                        pred = model(x)
+                    pred = model(x)
                     f_pred.extend(pred.argmax(1).detach().cpu().numpy().tolist())
 
 
             label_decoder = {val:key for key, val in label_unique.items()}
             f_result = [label_decoder[result] for result in f_pred]
-            return {"answer":f_result}
+            return {"answer":f_result[0]}
             # f_result를 json 파일에 수정해야함.
