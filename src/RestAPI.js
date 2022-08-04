@@ -29,7 +29,7 @@ function RestAPI() {
       });  
 
   }
-  const [text, setText] = useState([]);
+  const [text, setText] = useState({});
 
   const usePkNumber=async (e)=>{
 	e.preventDefault();
@@ -71,27 +71,13 @@ function RestAPI() {
     	</div>
 	  
 	  
-	{text.map((e) => (
-        <div>
-          {" "}
           <div className="list">
             <span>
-              {e.predict}, {e.answer}
-			  <img src={e.image} />
+              {text.predict}, {text.answer}
+			  <img src={text.image} />
             </span>
-            <button
-              className="btn-delete"
-              onClick={() => {
-                http.delete(`/products/${e.id}`);
-                setText(text.filter((text) => text.id !== e.id));
-              }}
-            >
-              DELETE
-            </button>{" "}
-          </div>
-        </div>
-      ))}
 
+          </div>
     </>
   );
 }

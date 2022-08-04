@@ -76,7 +76,7 @@ class Custom_dataset(Dataset):
 class Network(nn.Module):
     def __init__(self):
         super(Network, self).__init__()
-        self.model = models.resnet18(pretrained=False)
+        self.model = models.mobilenet_v2(pretrained=False)
         self.linear=nn.Linear(in_features=1000,out_features=88)
         
     def forward(self, x):
@@ -132,5 +132,5 @@ class PredictModel():
 
             label_decoder = {val:key for key, val in label_unique.items()}
             f_result = [label_decoder[result] for result in f_pred]
-            return {"answer":f_result[0]}
+            return {"answer" : f_result[0]}
             # f_result를 json 파일에 수정해야함.

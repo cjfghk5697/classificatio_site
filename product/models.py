@@ -7,3 +7,4 @@ class Product(models.Model):
     image = models.ImageField(default="media/default.jpg", upload_to="uploads")
     def __str__(self):
 	    return self.predict
+

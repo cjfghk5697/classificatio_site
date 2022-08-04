@@ -8,5 +8,3 @@ class ProductSerializer(serializers.HyperlinkedModelSerializer) :
         model = Product        # product 모델 사용
         fields = ('id','predict','image')           # 모든 필드 포함
         
-
-        
