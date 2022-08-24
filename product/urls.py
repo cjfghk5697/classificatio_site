@@ -9,7 +9,6 @@ from rest_framework import routers
 
 urlpatterns=[
     path('product/<int:pk>/',views.ProductPredictAPI.as_view()),
-
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
