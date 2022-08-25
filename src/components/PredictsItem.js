@@ -37,14 +37,16 @@ const PredictItem=({data,detail})=>{
 	
 	
 	const url= 'https://disease-onavw.run.goorm.io/'+data.id
+	const image_url= 'https://drf-disease-gfedr.run.goorm.io'+data.image
 	return(
+		<>
 		<PredictsItemBlock className="border-solid border-2 border-indigo-300">
 			{detail ==='all' ? 
 				(<div className="thumbnail">
 					  	<img src={image} alt="thumbnail" />
 					  </div>
-			) : (<div>
-					  	<img className="bg-no-repeat bg-center" src={data.image_url} alt="thumbnail" />
+			) : (<div className="thumbnail">
+					 <img src={image_url} alt="thumbnail" />
 				</div>
 			)}
 			
@@ -54,28 +56,28 @@ const PredictItem=({data,detail})=>{
 				{data.answer ?
         		(<p className="text-2xl">
 					<a href={url}>Name : {predict} (ID: {data.id})</a> <br/>
-					Predict Answer : AI{data.answer}
+					Predict Answer : {data.answer}
         		</p>) :
-				(
-						
-						<p className="text-base ">
+				(		
+				<p className="text-base ">
 					<a href={url}>Name : {predict} (ID: {data.id})</a> <br/>
-				 	Predict Answer : None
-				 </p>
+					Predict Answer : None
+				</p>
 				)
       		}
 				</h2>
 				<br />
 
 	</div>
-					{data.answer && 
-				(<div>
-					<h1>Percent</h1>
-					<PercentBar key={data.id} data={data}/>
-				</div>
-				)
-				}
+
 	</PredictsItemBlock>
+	{data.answer && 
+		(<div>
+			<h1 className="text-4xl text-black">Percent</h1>
+			<PercentBar key={data.id} data={data}/>
+		</div>)
+	}
+</>
 	);
 };
 

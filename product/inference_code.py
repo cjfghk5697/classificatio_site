@@ -128,10 +128,10 @@ class PredictModel():
             sub_pred=['','','','','',]
 
             for i in range(0,5):
-                index_list[i],sub_pred[i]=pred[0].detach().cpu().numpy().tolist().index(sort_pred[i]),sort_pred[i]*100.0
+                index_list[i],sub_pred[i]=pred[0].detach().cpu().numpy().tolist().index(sort_pred[i]),int(sort_pred[i]*100.0)
             
             sub_result = [label_decoder[result] for result in index_list]
             
-            return {"answer" : f_result,"sub_pred":sub_pred,"sub_result":sub_result}
+            return {"answer" : f_result[0],"sub_pred":sub_pred,"sub_result":sub_result}
         # pred에서 가장 큰 값 5개를 뽑아 index와 크기순으로 하기
 # https://urliveblogger.blogspot.com/2021/01/html-progress.html
