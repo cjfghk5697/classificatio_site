@@ -32,6 +32,8 @@ const uploadModule=async (e) =>{
         .post("/products/",formData,  { headers: {
                 "Content-Type": "multipart/form-data",
           },
+		},{
+			withCredentials: true // 쿠키 cors 통신 설정
 		})		
         .then(function (response) {
                 console.log(response);

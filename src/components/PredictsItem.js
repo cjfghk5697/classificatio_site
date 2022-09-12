@@ -36,14 +36,14 @@ const PredictItem=({data,detail})=>{
 
 	
 	
-	const url= 'https://disease-onavw.run.goorm.io/'+data.id
-	const image_url= 'https://drf-disease-gfedr.run.goorm.io'+data.image
+	const url= 'https://cjfghk5697-classification-site-5764gqr4w724pp7-3000.githubpreview.dev/'+data.id
+	const image_url= 'https://cjfghk5697-classification-site-5764gqr4w724pp7-8000.githubpreview.dev/media/'+data.image
 	return(
 		<>
 		<PredictsItemBlock className="border-solid border-2 border-indigo-300">
 			{detail ==='all' ? 
 				(<div className="thumbnail">
-					  	<img src={image} alt="thumbnail" />
+					  	<img src={image_url} alt="thumbnail" />
 					  </div>
 			) : (<div className="thumbnail">
 					 <img src={image_url} alt="thumbnail" />
@@ -75,7 +75,16 @@ const PredictItem=({data,detail})=>{
 		(<div>
 			<h1 className="text-4xl text-black">Percent</h1>
 			<PercentBar key={data.id} data={data}/>
-		</div>)
+			<div>
+
+			<h1 className="text-4xl text-black">Grad CAM</h1>
+			<img src={data.grad_cam} />
+
+			</div>
+
+		</div>
+		
+		)
 	}
 </>
 	);

@@ -2,6 +2,7 @@
   "name": "apiapp",
   "version": "0.1.0",
   "private": true,
+  "proxy": "https://cjfghk5697-classification-site-5764gqr4w724pp7-8000.githubpreview.dev",
   "dependencies": {
     "@hashicorp/react-actions": "^0.3.0",
     "@redux-devtools/extension": "^3.2.2",

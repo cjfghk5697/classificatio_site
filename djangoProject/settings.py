@@ -53,7 +53,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 CORS_ALLOWED_ORIGIN_REGEXES = [
-    r'^https:\/\/disease-onavw.run.goorm.io/$',
+    r'^https://\cjfghk5697-classification-site-5764gqr4w724pp7-3000+\.githubpreview\.dev/$',
 ]
 ROOT_URLCONF = 'djangoProject.urls'
 TEMPLATES = [
