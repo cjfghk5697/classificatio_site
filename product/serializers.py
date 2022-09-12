@@ -3,7 +3,7 @@ from rest_framework import serializers
 from .models import Product
 
 class ProductSerializer(serializers.HyperlinkedModelSerializer) :
-    image = serializers.ImageField(use_url=True)
+    image = serializers.ImageField(use_url=False)
     predict= serializers.CharField(max_length=70)
     class Meta :
         model = Product        # product 모델 사용

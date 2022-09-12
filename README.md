@@ -31,9 +31,15 @@ git clone https://github.com/cjfghk5697/classification_site.git
 - 코드 실행
  첫번째 줄은 DRF 실행코드 두번째 줄은 react 실행코드다.
 ```
-python3 /workspace/drf_disease/manage.py migrate && python3 /workspace/drf_disease/manage.py runserver 0.0.0.0:8000
+python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000py runserver 0.0.0.0:8000
 npm install && npm start
 ```
+- 패키지 다운
+
+```
+pip install -r requirements.txt
+```
+
 
 - 다른 모델 적용
 inference.py에서 수정해야할 부분이 있다.
