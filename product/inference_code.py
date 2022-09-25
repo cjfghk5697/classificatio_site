@@ -1,33 +1,21 @@
 import warnings
 warnings.filterwarnings('ignore')
 
-from glob import glob
 import pandas as pd
 import numpy as np 
-from tqdm import tqdm
 from pytorch_grad_cam import GradCAM
 from pytorch_grad_cam.utils.model_targets import ClassifierOutputTarget
 from pytorch_grad_cam.utils.image import show_cam_on_image
-import os
-import random
+
 import torch
 from torch.utils.data import Dataset, DataLoader
 import torch.nn as nn
 import torchvision
-from torchvision.models import mobilenet_v2
 import torchvision.transforms as transforms
-from sklearn.metrics import f1_score, accuracy_score
-import time
-from typing import Tuple, Sequence, Callable
 from PIL import Image
 import cv2
 from torchvision import models
 import matplotlib.pyplot as plt 
-
-
-def img_load(path):
-    img = cv2.resize(path, (16, 16))
-    return img
 
 def get_img_tensor(img_path):
     img = cv2.imread(img_path)
@@ -55,7 +43,7 @@ class PredictModel():
         if file_name==None:
             return { "answer" : "error" }
         else:
-            device = torch.device('cuda')
+            device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
             path="/workspaces/classification_site/media/uploads/{}".format(file_name)
 
             train_y = pd.read_csv('/workspaces/classification_site/product/input/train_df.csv')
@@ -65,7 +53,6 @@ class PredictModel():
             label_unique = sorted(np.unique(train_labels))
             label_unique = {key:value for key,value in zip(label_unique, range(len(label_unique)))}
 
-            device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
             model = Network().to(device)
             model.load_state_dict(torch.load("/workspaces/classification_site/product/model/mobilenetv2.pth",map_location=device) ,strict=False)
             model.eval()
